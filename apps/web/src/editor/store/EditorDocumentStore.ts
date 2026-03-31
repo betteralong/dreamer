@@ -62,6 +62,15 @@ export class EditorDocumentStore {
     return true;
   }
 
+  updateElementBounds(id: string, x: number, y: number, width: number, height: number) {
+    const target = this.elements.find((item) => item.id === id);
+    if (!target) return false;
+    target.setPosition(x, y);
+    target.setSize(width, height);
+    this.syncActiveLayoutElements();
+    return true;
+  }
+
   getElementPosition(id: string) {
     const target = this.elements.find((item) => item.id === id);
     if (!target) return null;
@@ -69,6 +78,18 @@ export class EditorDocumentStore {
     return {
       x: snapshot.transform.x,
       y: snapshot.transform.y,
+    };
+  }
+
+  getElementBounds(id: string) {
+    const target = this.elements.find((item) => item.id === id);
+    if (!target) return null;
+    const snapshot = target.toJSON();
+    return {
+      x: snapshot.transform.x,
+      y: snapshot.transform.y,
+      width: snapshot.size.width,
+      height: snapshot.size.height,
     };
   }
 

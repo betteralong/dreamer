@@ -30,6 +30,11 @@ export abstract class BaseElement<TType extends ElementType, TData> {
     this.snapshot.transform.y = y;
   }
 
+  setSize(width: number, height: number) {
+    this.snapshot.size.width = Math.max(1, width);
+    this.snapshot.size.height = Math.max(1, height);
+  }
+
   moveBy(dx: number, dy: number) {
     if (!this.canMove()) return;
     this.snapshot.transform.x += dx;

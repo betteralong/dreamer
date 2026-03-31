@@ -1,11 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+:root,
+:root[data-theme="dark-tech"] {
+  --app-bg: #060a16;
+  --app-bg-soft: #0b1328;
+  --app-panel: #101c36;
+  --app-panel-soft: #162448;
+  --app-border: #263b66;
+  --app-border-strong: #3a5d98;
+  --app-text: #eaf1ff;
+  --app-text-muted: #9cb0d8;
+  --app-text-subtle: #7284ad;
+  --app-accent: #39c5ff;
+  --app-accent-strong: #00e8ff;
+  --app-accent-soft: #183b63;
+  --app-success: #37e1a4;
+  --app-danger: #ff6e8e;
+  --app-glow-1: rgb(57 197 255 / 12%);
+  --app-glow-2: rgb(0 232 255 / 10%);
+  --canvas-axis: #263b66;
+  --canvas-hover-border: #74d9ff;
+  --canvas-selection-border: #39c5ff;
+  --canvas-handle-fill: #eaf1ff;
+  --canvas-marquee-fill: #39c5ff;
+  --canvas-overlay-card: #101c36;
+  --canvas-overlay-halo: #162448;
+  --canvas-overlay-grid-dot: #39c5ff;
+  --canvas-overlay-track: #263b66;
+  --canvas-loading-frame-fill: #162448;
+  --canvas-loading-frame-border: #3a5d98;
+  --canvas-failed-fill: #ff6e8e;
+  --canvas-failed-border: #ff6e8e;
+  --canvas-failed-text: #ff9ab0;
+  --canvas-overlay-text: #eaf1ff;
+  --canvas-overlay-muted-text: #9cb0d8;
+  --app-shadow-panel: 0 20px 56px -30px color-mix(in srgb, var(--app-accent) 50%, transparent);
+  --app-shadow-card-inset: inset 0 1px 0 color-mix(in srgb, var(--app-text-muted) 8%, transparent);
+  --app-shadow-primary-btn: 0 10px 26px -14px color-mix(in srgb, var(--app-accent) 95%, transparent);
+  --app-tooltip-border: color-mix(in srgb, var(--app-border-strong) 88%, transparent);
+  --app-tooltip-bg: color-mix(in srgb, var(--app-panel-soft) 96%, transparent);
+  --app-tooltip-shadow: 0 12px 26px -16px color-mix(in srgb, var(--app-accent) 50%, transparent);
+}
+
+:root[data-theme="deep-purple"] {
+  --app-bg: #0d0a1f;
+  --app-bg-soft: #171133;
+  --app-panel: #221a45;
+  --app-panel-soft: #2b2157;
+  --app-border: #4a3d7d;
+  --app-border-strong: #6752ae;
+  --app-text: #f1edff;
+  --app-text-muted: #bbb1e6;
+  --app-text-subtle: #8c82ba;
+  --app-accent: #8f7bff;
+  --app-accent-strong: #ba8dff;
+  --app-accent-soft: #3e3178;
+  --app-success: #5be7b3;
+  --app-danger: #ff7da9;
+  --app-glow-1: rgb(143 123 255 / 15%);
+  --app-glow-2: rgb(186 141 255 / 12%);
+  --canvas-axis: #4a3d7d;
+  --canvas-hover-border: #d2b6ff;
+  --canvas-selection-border: #8f7bff;
+  --canvas-handle-fill: #f1edff;
+  --canvas-marquee-fill: #8f7bff;
+  --canvas-overlay-card: #221a45;
+  --canvas-overlay-halo: #2b2157;
+  --canvas-overlay-grid-dot: #ba8dff;
+  --canvas-overlay-track: #4a3d7d;
+  --canvas-loading-frame-fill: #2b2157;
+  --canvas-loading-frame-border: #6752ae;
+  --canvas-failed-fill: #ff7da9;
+  --canvas-failed-border: #ff7da9;
+  --canvas-failed-text: #ffb2ca;
+  --canvas-overlay-text: #f1edff;
+  --canvas-overlay-muted-text: #bbb1e6;
+  --app-shadow-panel: 0 20px 56px -30px color-mix(in srgb, var(--app-accent) 46%, transparent);
+  --app-shadow-card-inset: inset 0 1px 0 color-mix(in srgb, var(--app-text-muted) 10%, transparent);
+  --app-shadow-primary-btn: 0 10px 26px -14px color-mix(in srgb, var(--app-accent) 88%, transparent);
+  --app-tooltip-border: color-mix(in srgb, var(--app-border-strong) 90%, transparent);
+  --app-tooltip-bg: color-mix(in srgb, var(--app-panel-soft) 97%, transparent);
+  --app-tooltip-shadow: 0 12px 26px -16px color-mix(in srgb, var(--app-accent) 46%, transparent);
+}
+
+:root[data-theme="matrix-green"] {
+  --app-bg: #060f0a;
+  --app-bg-soft: #0b1b14;
+  --app-panel: #10261d;
+  --app-panel-soft: #163126;
+  --app-border: #25523e;
+  --app-border-strong: #2f7658;
+  --app-text: #e8ffe8;
+  --app-text-muted: #9fd3b0;
+  --app-text-subtle: #6fa083;
+  --app-accent: #39ff8f;
+  --app-accent-strong: #74ffb3;
+  --app-accent-soft: #1d5539;
+  --app-success: #46f7a6;
+  --app-danger: #ff7a96;
+  --app-glow-1: rgb(57 255 143 / 11%);
+  --app-glow-2: rgb(116 255 179 / 9%);
+  --canvas-axis: #25523e;
+  --canvas-hover-border: #9affcb;
+  --canvas-selection-border: #39ff8f;
+  --canvas-handle-fill: #e8ffe8;
+  --canvas-marquee-fill: #39ff8f;
+  --canvas-overlay-card: #10261d;
+  --canvas-overlay-halo: #163126;
+  --canvas-overlay-grid-dot: #74ffb3;
+  --canvas-overlay-track: #25523e;
+  --canvas-loading-frame-fill: #163126;
+  --canvas-loading-frame-border: #2f7658;
+  --canvas-failed-fill: #ff7a96;
+  --canvas-failed-border: #ff7a96;
+  --canvas-failed-text: #ffb1bf;
+  --canvas-overlay-text: #e8ffe8;
+  --canvas-overlay-muted-text: #9fd3b0;
+  --app-shadow-panel: 0 20px 56px -30px color-mix(in srgb, var(--app-accent) 42%, transparent);
+  --app-shadow-card-inset: inset 0 1px 0 color-mix(in srgb, var(--app-text-muted) 9%, transparent);
+  --app-shadow-primary-btn: 0 10px 26px -14px color-mix(in srgb, var(--app-accent) 90%, transparent);
+  --app-tooltip-border: color-mix(in srgb, var(--app-border-strong) 90%, transparent);
+  --app-tooltip-bg: color-mix(in srgb, var(--app-panel-soft) 97%, transparent);
+  --app-tooltip-shadow: 0 12px 26px -16px color-mix(in srgb, var(--app-accent) 44%, transparent);
+}
+
 body {
   margin: 0;
   min-width: 320px;
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: #020617;
+  font-family: "DM Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--app-text);
+  background:
+    radial-gradient(circle at 18% 18%, var(--app-glow-1), transparent 42%),
+    radial-gradient(circle at 82% 8%, var(--app-glow-2), transparent 40%),
+    var(--app-bg);
+  transition: background-color 280ms ease, color 220ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  color: var(--app-bg);
+  background: color-mix(in srgb, var(--app-accent) 82%, white);
 }
 
 #app {
   width: 100%;
   height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
 }

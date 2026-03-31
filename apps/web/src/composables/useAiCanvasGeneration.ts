@@ -14,7 +14,7 @@ interface Point {
 
 interface CanvasEditorAdapter {
   documentStore: EditorDocumentStore;
-  selectedElementId: Ref<string | null>;
+  selectedElementIds: Ref<string[]>;
   applySystemUpdate: (action: () => void) => void;
   forceSync: () => void;
   executeCommand: (command: HistoryCommand, options?: { recordHistory?: boolean }) => void;

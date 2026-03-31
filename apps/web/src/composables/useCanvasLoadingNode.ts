@@ -12,7 +12,7 @@ interface Point {
 
 interface CanvasEditorAdapter {
   documentStore: EditorDocumentStore;
-  selectedElementId: Ref<string | null>;
+  selectedElementIds: Ref<string[]>;
   forceSync: () => void;
   executeCommand: (command: HistoryCommand, options?: { recordHistory?: boolean }) => void;
 }
@@ -52,8 +52,10 @@ export function useCanvasLoadingNode(
     editor.executeCommand(new RemoveElementCommand(loadingNodeId.value), {
       recordHistory: false,
     });
-    if (editor.selectedElementId.value === loadingNodeId.value) {
-      editor.selectedElementId.value = null;
+    if (loadingNodeId.value) {
+      editor.selectedElementIds.value = editor.selectedElementIds.value.filter(
+        (item) => item !== loadingNodeId.value,
+      );
     }
     loadingNodeId.value = null;
   }

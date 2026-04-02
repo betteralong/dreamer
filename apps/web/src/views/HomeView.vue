@@ -33,7 +33,17 @@ interface InfiniteCanvasExposed {
   focusOn: (point: Point, animate?: boolean) => void;
 }
 
+interface AiChatBoxExposed {
+  focusSender: () => void;
+  clearSender: () => void;
+  resetSenderWithMock: () => void;
+  insertSellingPoint: () => void;
+  toggleReadOnly: () => void;
+  setReadOnly: (readonly: boolean) => void;
+}
+
 const canvasRef = ref<InfiniteCanvasExposed | null>(null);
+const chatBoxRef = ref<AiChatBoxExposed | null>(null);
 
 function getCanvasCenter() {
   return canvasRef.value?.getViewportCenter() ?? { x: 0, y: 0 };
@@ -181,6 +191,26 @@ function handleEditRequestConsumed(payload: { id: string }) {
 function handleSelectRequestConsumed(payload: { id: string }) {
   if (pendingSelectElementId.value !== payload.id) return;
   pendingSelectElementId.value = null;
+}
+
+function handleChatDebugFocus() {
+  chatBoxRef.value?.focusSender();
+}
+
+function handleChatDebugInsert() {
+  chatBoxRef.value?.insertSellingPoint();
+}
+
+function handleChatDebugReset() {
+  chatBoxRef.value?.resetSenderWithMock();
+}
+
+function handleChatDebugClear() {
+  chatBoxRef.value?.clearSender();
+}
+
+function handleChatDebugToggleReadonly() {
+  chatBoxRef.value?.toggleReadOnly();
 }
 
 onBeforeUnmount(() => {
@@ -366,7 +396,48 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
+      <div class="ui-card panel-block mb-2 px-3 py-2 text-[11px] text-app-text-muted">
+        <div class="ui-section-title mb-1">Chat Sender 调试</div>
+        <div class="flex flex-wrap gap-1.5">
+          <button
+            type="button"
+            class="ui-btn-ghost"
+            @click="handleChatDebugFocus"
+          >
+            focus()
+          </button>
+          <button
+            type="button"
+            class="ui-btn-ghost"
+            @click="handleChatDebugInsert"
+          >
+            insertPart()
+          </button>
+          <button
+            type="button"
+            class="ui-btn-ghost"
+            @click="handleChatDebugReset"
+          >
+            setParts(mock)
+          </button>
+          <button
+            type="button"
+            class="ui-btn-ghost"
+            @click="handleChatDebugClear"
+          >
+            clear()
+          </button>
+          <button
+            type="button"
+            class="ui-btn-ghost"
+            @click="handleChatDebugToggleReadonly"
+          >
+            readOnly toggle
+          </button>
+        </div>
+      </div>
       <AiChatBox
+        ref="chatBoxRef"
         :messages="messages"
         :submitting="submitting"
         @submit="handlePromptSubmit"

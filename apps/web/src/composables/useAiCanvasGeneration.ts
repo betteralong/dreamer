@@ -1,5 +1,6 @@
 import { ref, type Ref } from "vue";
 import type { AiImageStreamEvent } from "@dreamer/shared";
+import type { ChatSenderSubmitPayload } from "@dreamer/chat-sender-sdk";
 import { streamAiChat } from "../services/ai";
 import type { ChatMessage } from "../types/chat";
 import type { EditorDocumentStore } from "../editor/store/EditorDocumentStore";
@@ -122,9 +123,11 @@ export function useAiCanvasGeneration(
     messageRevealTimers.set(messageId, timer);
   }
 
-  async function handlePromptSubmit(prompt: string) {
+  async function handlePromptSubmit(payload: string | ChatSenderSubmitPayload) {
     if (submitting.value) return;
     submitting.value = true;
+    const prompt = typeof payload === "string" ? payload : payload.promptText;
+    const parts = typeof payload === "string" ? undefined : payload.parts;
 
     messages.value.push({
       id: crypto.randomUUID(),
@@ -145,7 +148,7 @@ export function useAiCanvasGeneration(
     });
 
     try {
-      await streamAiChat({ prompt }, (event) => {
+      await streamAiChat({ prompt, parts }, (event) => {
         if (event.type === "thinking") {
           const message = messages.value.find((item) => item.id === pendingAiMessageId);
           if (!message) return;

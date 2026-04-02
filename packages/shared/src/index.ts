@@ -34,6 +34,24 @@ export interface CanvasLoadingNode extends CanvasNodeBase {
 export interface AiGenerationRequest {
   prompt: string;
   sessionId?: string;
+  parts?: Array<{
+    $id?: string;
+    type: "text" | "media";
+    content?: string;
+    value?: string;
+    mime?: string;
+    url?: string;
+    name?: string;
+    extra?: {
+      placeholder?: {
+        type: "text" | "input" | "select" | "image";
+        label?: string;
+        removable?: boolean;
+        emphasize?: boolean;
+        options?: Array<{ label: string; value: string }>;
+      };
+    };
+  }>;
 }
 
 export type AiGenerationStatus =

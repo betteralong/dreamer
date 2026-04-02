@@ -11,6 +11,7 @@
     "lint": "echo \"web lint: no-op\""
   },
   "dependencies": {
+    "@dreamer/chat-sender-sdk": "workspace:*",
     "@dreamer/shared": "workspace:*",
     "@tiptap/starter-kit": "^2.11.5",
     "@tiptap/vue-3": "^2.11.5",

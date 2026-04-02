@@ -1,36 +1,79 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue";
-import StarterKit from "@tiptap/starter-kit";
-import { EditorContent, useEditor } from "@tiptap/vue-3";
+import { nextTick, onMounted, ref, watch } from "vue";
 import { Bubble } from "ant-design-x-vue";
+import {
+  ChatSenderSdk,
+  type ChatSenderChangePayload,
+  type ChatSenderInstance,
+  type RawPart,
+  type ChatSenderSubmitPayload,
+} from "@dreamer/chat-sender-sdk";
+import { getMockPrompt } from "../services/mock";
 import type { ChatMessage } from "../types/chat";
 
-const props = defineProps<{
-  messages: ChatMessage[];
-  submitting: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    messages: ChatMessage[];
+    submitting: boolean;
+  }>(),
+  {},
+);
 const emit = defineEmits<{
-  submit: [prompt: string];
+  submit: [payload: ChatSenderSubmitPayload];
   addToCanvas: [messageId: string];
 }>();
 
 const listRef = ref<HTMLDivElement | null>(null);
+const senderRef = ref<ChatSenderInstance | null>(null);
+const promptCharCount = ref(0);
+const senderReadOnly = ref(false);
 
-const editor = useEditor({
-  extensions: [StarterKit],
-  content: "<p>描述你想生成的图片...</p>",
-});
-
-const plainText = computed(() => editor.value?.getText().trim() ?? "");
-const canSubmit = computed(() => !!plainText.value && !props.submitting);
-
-function submitPrompt() {
-  if (!canSubmit.value) return;
-  const prompt = plainText.value;
-  if (!prompt) return;
-  emit("submit", prompt);
-  editor.value?.commands.setContent("<p></p>");
+function handleSenderChange(payload: ChatSenderChangePayload) {
+  promptCharCount.value = payload.promptText.length;
 }
+
+function handleSenderSubmit(payload: ChatSenderSubmitPayload) {
+  emit("submit", payload);
+}
+
+function focusSender() {
+  senderRef.value?.focus();
+}
+
+function clearSender() {
+  senderRef.value?.clear();
+}
+
+function resetSenderWithMock() {
+  senderRef.value?.setParts(getMockPrompt() as RawPart[]);
+}
+
+function insertSellingPoint() {
+  senderRef.value?.insertPart({
+    type: "text",
+    content: "",
+    value: "云感绒面，包裹感强",
+    extra: {
+      placeholder: {
+        type: "input",
+        label: "补充卖点",
+        removable: true,
+      },
+    },
+  });
+}
+
+function toggleReadOnly() {
+  senderReadOnly.value = !senderReadOnly.value;
+}
+
+function setReadOnly(readonly: boolean) {
+  senderReadOnly.value = readonly;
+}
+
+onMounted(() => {
+  resetSenderWithMock();
+});
 
 watch(
   () => props.messages.length,
@@ -40,6 +83,15 @@ watch(
     listRef.value.scrollTop = listRef.value.scrollHeight;
   },
 );
+
+defineExpose({
+  focusSender,
+  clearSender,
+  resetSenderWithMock,
+  insertSellingPoint,
+  toggleReadOnly,
+  setReadOnly,
+});
 </script>
 
 <template>
@@ -117,20 +169,17 @@ watch(
 
     <h3 class="m-0 font-display text-xs font-medium tracking-wide text-app-text-subtle">AI 对话框</h3>
     <div class="ui-card editor-shell flex flex-col gap-2 p-2">
-      <EditorContent :editor="editor" class="editor" />
-      <div class="flex items-center justify-between px-1 text-[11px] text-app-text-subtle">
-        <span>支持自然语言描述画面、风格、构图</span>
-        <span>{{ plainText.length }} chars</span>
+      <ChatSenderSdk
+        ref="senderRef"
+        :submitting="props.submitting"
+        :read-only="senderReadOnly"
+        :initial-parts="[]"
+        @change="handleSenderChange"
+        @submit="handleSenderSubmit"
+      />
+      <div class="flex items-center justify-end px-1 text-[11px] text-app-text-subtle">
+        <span>{{ promptCharCount }} chars</span>
       </div>
-      <button
-        type="button"
-        class="ui-btn-primary send-btn"
-        :class="{ 'is-submitting': props.submitting }"
-        :disabled="!canSubmit"
-        @click="submitPrompt"
-      >
-        {{ props.submitting ? "生成中..." : "发送并生图" }}
-      </button>
     </div>
   </section>
 </template>
@@ -145,25 +194,6 @@ watch(
     opacity: 1;
     transform: scale(1);
   }
-}
-
-:deep(.ProseMirror) {
-  min-height: 120px;
-  padding: 12px;
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  color: var(--app-text);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--app-panel) 95%, transparent),
-    color-mix(in srgb, var(--app-bg-soft) 96%, transparent)
-  );
-  outline: none;
-}
-
-:deep(.ProseMirror:focus-visible) {
-  border-color: var(--app-accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-accent) 22%, transparent);
 }
 
 .chat-list::-webkit-scrollbar {
@@ -218,28 +248,4 @@ watch(
   border-color: color-mix(in srgb, var(--app-border-strong) 96%, transparent);
 }
 
-.send-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.send-btn.is-submitting::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    100deg,
-    transparent 30%,
-    color-mix(in srgb, var(--app-text) 24%, transparent) 52%,
-    transparent 72%
-  );
-  transform: translateX(-130%);
-  animation: sending-shimmer 1.1s linear infinite;
-}
-
-@keyframes sending-shimmer {
-  to {
-    transform: translateX(135%);
-  }
-}
 </style>
